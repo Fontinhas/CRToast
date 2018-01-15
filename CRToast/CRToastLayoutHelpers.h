@@ -178,7 +178,19 @@ static CGRect CRStatusBarViewFrame(CRToastType type, CRToastAnimationDirection d
 #pragma mark - Notification Container Frame
 /// Get the notifications container frame based on orientation & notification size
 static CGRect CRGetNotificationContainerFrame(UIInterfaceOrientation statusBarOrientation, CGSize notificationSize) {
-    CGRect containerFrame = CGRectMake(0, 0, notificationSize.width, notificationSize.height);
+    
+     UIEdgeInsets edgeInsets = UIEdgeInsetsZero;
+    if (@available(iOS 11.0, *))
+    {
+         UIWindow * window = [[[UIApplication sharedApplication] windows] firstObject];
+        if (window != nil)
+        {
+            edgeInsets = window.safeAreaInsets;
+        }
+    }
+    
+    
+    CGRect containerFrame = CGRectMake(0, edgeInsets.top, notificationSize.width, notificationSize.height);
 
     if (!CRFrameAutoAdjustedForOrientation()) {
         switch (statusBarOrientation) {
